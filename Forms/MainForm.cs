@@ -878,18 +878,51 @@ public partial class MainForm : Form
         if (lblLastCheck  != null) lblLastCheck.Text  = $"Last check: {DateTime.Now:HH:mm:ss}";
     }
 
+    private bool _domainClickAttached = false;
+
     private void RefreshDomainsPage()
     {
         if (lvDomains == null) return;
         lvDomains.Items.Clear();
+
         foreach (var d in _settings.Domains)
         {
             var item = new ListViewItem(d.DisplayName);
-            item.SubItems.Add(d.Url); item.SubItems.Add(d.Status.ToString());
-            item.SubItems.Add($"{d.ResponseMs} ms"); item.SubItems.Add($"{d.Uptime24h}%");
+            item.SubItems.Add(d.Url);
+            item.SubItems.Add(d.Status.ToString());
+            item.SubItems.Add($"{d.ResponseMs} ms");
+            item.SubItems.Add($"{d.Uptime24h}%");
             item.SubItems.Add(d.SslDaysRemaining >= 0 ? $"{d.SslDaysRemaining}d" : "—");
-            item.ForeColor = d.Status == DomainStatus.Online ? Color.FromArgb(46, 125, 50) : d.Status == DomainStatus.Down ? Color.FromArgb(198, 40, 40) : Color.FromArgb(230, 81, 0);
+            item.ForeColor = d.Status == DomainStatus.Online ? Color.FromArgb(46, 125, 50)
+                           : d.Status == DomainStatus.Down ? Color.FromArgb(198, 40, 40)
+                           : Color.FromArgb(230, 81, 0);
+            item.Tag = d; 
             lvDomains.Items.Add(item);
+        }
+
+        if (!_domainClickAttached)
+        {
+            _domainClickAttached = true;
+            lvDomains.MouseClick += (s, e) =>
+            {
+                if (e.Button != MouseButtons.Right || lvDomains.SelectedItems.Count == 0) return;
+                var domain = (MonitoredDomain)lvDomains.SelectedItems[0].Tag;
+
+                var ctx = new ContextMenuStrip();
+                ctx.Items.Add("🔍 Check Now", null, async (s, ev) =>
+                {
+                    await _domainMonitor.CheckDomainAsync(domain);
+                    RefreshDomainsPage();
+                });
+                ctx.Items.Add(new ToolStripSeparator());
+                ctx.Items.Add("✕ Remove", null, (s, ev) =>
+                {
+                    _settings.Domains.Remove(domain);
+                    _settings.Save();
+                    RefreshDomainsPage();
+                });
+                ctx.Show(lvDomains, e.Location);
+            };
         }
     }
 
