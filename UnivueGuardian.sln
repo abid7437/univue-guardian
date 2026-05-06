@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37216.2 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnivueGuardian", "UnivueGuardian.csproj", "{4BC62B59-65DF-2B6A-73E5-5161B841A27B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4BC62B59-65DF-2B6A-73E5-5161B841A27B}.Debug|x64.ActiveCfg = Debug|x64
+		{4BC62B59-65DF-2B6A-73E5-5161B841A27B}.Debug|x64.Build.0 = Debug|x64
+		{4BC62B59-65DF-2B6A-73E5-5161B841A27B}.Release|x64.ActiveCfg = Release|x64
+		{4BC62B59-65DF-2B6A-73E5-5161B841A27B}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1B4D9BCC-42C3-4221-8D5E-F552F6CBB422}
+	EndGlobalSection
+EndGlobal
